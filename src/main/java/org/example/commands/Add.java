@@ -92,14 +92,14 @@ public class Add extends Command {
 
         OrganizationType type;
         while (true) {
-            System.out.print("Тип [TRUST, PRIVATE_LIMITED_COMPANY, OPEN_JOINT_STOCK_COMPANY]: ");
+            System.out.print("Введите тип [TRUST, PRIVATE_LIMITED_COMPANY, OPEN_JOINT_STOCK_COMPANY]: ");
             String typeStr = scanner.nextLine().trim().toUpperCase();
             try {
                 type = OrganizationType.valueOf(typeStr);
                 break;
             }
             catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+                System.out.println("Такого type не сущетсвует, введите еще раз");
             }
         }
 

@@ -2,24 +2,33 @@ package org.example.models;
 
 import java.time.LocalDate;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.example.util.Validator;
 
 public class Organization implements Comparable<Organization>{
     private long id;
     private String name;
     private Coordinates coordinates;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate creationDate;
     private float annualTurnover;
     private OrganizationType type;
     private Address officialAddress;
 
-    private static int nextId = 1;
+    private static long nextId = 0;
+
+    public Organization() {
+        // пустой конструктор для Jackson
+    }
 
     public Organization(String name, Coordinates coordinates, float annualTurnover, OrganizationType type, Address officialAddress){
         Validator.validateName(name);
         Validator.validateAnnualTurnover(annualTurnover);
         Validator.validateType(type);
         Validator.validateCoordinates(coordinates);
+
+        touchNextId();
 
         this.id = nextId;
         this.name = name;
@@ -34,13 +43,93 @@ public class Organization implements Comparable<Organization>{
         return id;
     }
 
+    public OrganizationType getType(){
+        return type;
+    }
+
+    public Address getOfficialAddress(){
+        return officialAddress;
+    }
+
+    public LocalDate getCreationDate(){
+        return creationDate;
+    }
+
     public static void touchNextId() {
         nextId++;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+
+    public float getAnnualTurnover() {
+        return annualTurnover;
+    }
+
+    public static long getNextId() {
+        return nextId;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
+    }
+
+    public void setCreationDate(LocalDate creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public void setAnnualTurnover(float annualTurnover) {
+        this.annualTurnover = annualTurnover;
+    }
+
+    public void setType(OrganizationType type) {
+        this.type = type;
+    }
+
+    public void setOfficialAddress(Address officialAddress) {
+        this.officialAddress = officialAddress;
+    }
+
+    public static void setNextId(long nextId) {
+        Organization.nextId = nextId;
     }
 
     @Override
     public int compareTo(Organization o) {
         return Long.compare(this.id, o.id);
+    }
+
+    public Organization(long id, LocalDate creationDate, String name, Coordinates coordinates,
+                        float annualTurnover, OrganizationType type, Address officialAddress) {
+        Validator.validateName(name);
+        Validator.validateAnnualTurnover(annualTurnover);
+        Validator.validateType(type);
+        Validator.validateCoordinates(coordinates);
+
+        this.id = id;
+        this.name = name;
+        this.coordinates = coordinates;
+        this.creationDate = creationDate;
+        this.annualTurnover = annualTurnover;
+        this.type = type;
+        this.officialAddress = officialAddress;
+
+        if (id >= nextId) {
+            nextId = id + 1;
+        }
     }
 
     @Override

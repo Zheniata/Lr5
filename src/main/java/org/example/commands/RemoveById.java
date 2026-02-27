@@ -1,0 +1,34 @@
+package org.example.commands;
+
+import org.example.managers.CollectionManager;
+import org.example.models.Organization;
+
+import java.util.Scanner;
+
+public class RemoveById extends Command {
+    CollectionManager collectionManager;
+
+    public RemoveById(CollectionManager collectionManager) {
+        super("remove_by_id");
+        this.collectionManager = collectionManager;
+    }
+
+    @Override
+    public void execute(String[] args) {
+        String strId = args[0].trim();
+        long id;
+        try {
+            id = Long.parseLong(strId);
+        } catch (NumberFormatException e) {
+            System.out.println("Неверный фомат id");
+            return;
+        }
+        Organization organization = collectionManager.getById(id);
+        if (organization == null) {
+            System.out.println("Организация с id=" + id + " не найдена");
+            return;
+        }
+        collectionManager.removeFromCollection(organization);
+        System.out.println("Организация с id=" + id + " удалена");
+    }
+}

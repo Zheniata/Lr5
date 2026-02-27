@@ -1,5 +1,7 @@
 package org.example.util;
 
+import org.example.commands.Command;
+import org.example.commands.Exit;
 import org.example.managers.CommandManager;
 
 import java.util.Scanner;
@@ -14,6 +16,7 @@ public class Runner {
     }
 
     public void interactiveMode(){
+        System.out.println("Ввведите команду");
         while (true){
             System.out.println("> ");
             String line = scanner.nextLine().trim();
@@ -31,13 +34,15 @@ public class Runner {
             else {
                 args = new String[0];
             }
-            if ("exit".equals(commandName)){
-                System.out.println("Работа завершена");
+            Command command = commandManager.getCommand(commandName);
+            if (command instanceof Exit){
+                command.execute(args);
                 break;
             }
 
             try{
                 commandManager.execute(commandName, args);
+                commandManager.addCommandHistory(commandName);
             }
             catch (Exception e){
                 System.out.println(e.getMessage());

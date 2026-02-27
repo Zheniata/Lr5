@@ -12,8 +12,8 @@ public class Info extends Command{
 
     @Override
     public void execute(String[] args) {
-        System.out.println("Тип коллекции:" + collectionManager.getCollection().getClass().getSimpleName());
-        System.out.println("Дата инициализации" + collectionManager.getTime());
-        System.out.println("Колличество элементов" + collectionManager.size());
+        System.out.println("Тип коллекции: " + collectionManager.getCollection().getClass().getSimpleName());
+        System.out.println("Дата инициализации: " + collectionManager.getTime());
+        System.out.println("Колличество элементов: " + collectionManager.size());
     }
 }

@@ -7,6 +7,8 @@ public class Coordinates {
     private double x;
     private long y;
 
+    public Coordinates() {}
+
     public Coordinates(double x, long y){
          this.x = x;
          this.y = y;
@@ -38,5 +40,13 @@ public class Coordinates {
 
     public long getY() {
         return y;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public void setY(long y) {
+        this.y = y;
     }
 }
