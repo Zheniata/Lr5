@@ -2,13 +2,19 @@ package org.example.commands;
 
 import org.example.managers.CollectionManager;
 import org.example.managers.CommandManager;
+
+import java.time.LocalDate;
 import java.util.Scanner;
 import org.example.exceptions.*;
 import org.example.models.Address;
 import org.example.models.Coordinates;
 import org.example.models.Organization;
 import org.example.models.OrganizationType;
-
+/**
+ * Команда добавления новой организации в коллекцию.
+ * Запрашивает у пользователя все необходимые поля:
+ * имя, координаты, годовой оборот, тип и адрес.
+ */
 public class Add extends Command {
     private CollectionManager collectionManager;
     private Scanner scanner;
@@ -18,6 +24,16 @@ public class Add extends Command {
         this.collectionManager = collectionManager;
         this.scanner = scanner;
     }
+
+    /**
+     * Выполянет добавление новой организации
+     * Запрашивает у пользователя:
+     * -имя
+     * -координаты
+     * -годовой оборот
+     * -тип организации
+     * @param args аргументы команды (не используется)
+     */
 
     @Override
     public void execute(String[] args) {
@@ -121,7 +137,17 @@ public class Add extends Command {
         }
 
         try {
-            Organization organization = new Organization(name, coordinates, annualTurnover, type, address);
+            long newId = collectionManager.getNextAvailableId();
+            LocalDate creationDate = LocalDate.now();
+            Organization organization = new Organization(
+                    newId,
+                    creationDate,
+                    name,
+                    coordinates,
+                    annualTurnover,
+                    type,
+                    address
+            );
             collectionManager.addToCollection(organization);
             System.out.println("Организация добавлена");
         }

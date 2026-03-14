@@ -5,7 +5,10 @@ import org.example.commands.Exit;
 import org.example.managers.CommandManager;
 
 import java.util.Scanner;
-
+/**
+ * Класс, отвечающий за запуск и управление интерактивным режимом работы программы.
+ * Обрабатывает ввод пользователя, разбирает команды и передаёт их на выполнение.
+ */
 public class Runner {
     private CommandManager commandManager;
     private Scanner scanner;
@@ -14,6 +17,11 @@ public class Runner {
         this.commandManager = commandManager;
         this.scanner = scanner;
     }
+
+    /**
+     * Запускает бесконечный цикл интерактивного режима.
+     * Программа завершается только при выполнении команды {@code exit}.
+     */
 
     public void interactiveMode(){
         System.out.println("Ввведите команду");

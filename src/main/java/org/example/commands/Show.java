@@ -5,6 +5,10 @@ import org.example.models.Organization;
 
 import java.util.PriorityQueue;
 
+/**
+ * Команда вывода всех организаций из коллекции.
+ */
+
 public class Show extends Command{
     CollectionManager collectionManager;
 
@@ -12,6 +16,13 @@ public class Show extends Command{
         super("show");
         this.collectionManager = collectionManager;
     }
+
+    /**
+     * Выводит все организации из коллекции.
+     * Если коллекция пуста — выводит соответствующее сообщение.
+     *
+     * @param args аргументы команды (игнорируются)
+     */
 
     @Override
     public void execute(String[] args) {

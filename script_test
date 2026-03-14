@@ -1,3 +1,5 @@
 help
 add
 show
+print_field_descending_type
+add {name='ООО', x=123.4, y=567, annualTurnover=890.0, type=TRUST, street='Улица, 1', zipCode='123456'}

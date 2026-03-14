@@ -1,7 +1,11 @@
 package org.example.models;
 
 import java.util.Objects;
-
+/**
+ * Модель официального адреса организации.
+ * Содержит улицу и почтовый индекс.
+ * Используется в составе класса {@link Organization}.
+ */
 public class Address {
     private String street;
     private String zipCode;

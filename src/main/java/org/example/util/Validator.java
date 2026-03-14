@@ -2,7 +2,10 @@ package org.example.util;
 
 import org.example.models.Coordinates;
 import org.example.models.OrganizationType;
-
+/**
+ * Утилитный класс для валидации полей модели {@link org.example.models.Organization}.
+ * Все методы статические и выбрасывают {@link IllegalArgumentException} при нарушении правил.
+ */
 public class Validator {
 
     public static void validateId(long id){
@@ -11,11 +14,25 @@ public class Validator {
         }
     }
 
+    /**
+     * Валидирует название организации.
+     *
+     * @param name проверяемое название
+     * @throws IllegalArgumentException если название {@code null} или пустое
+     */
+
     public static void validateName(String name){
         if (name == null || name.isEmpty()){
             throw new IllegalArgumentException("Имя пользователя не должно быть путсым или null");
         }
     }
+
+    /**
+     * Валидирует годовой оборот.
+     *
+     * @param turnover проверяемое значение
+     * @throws IllegalArgumentException если оборот ≤ 0
+     */
 
     public static void validateAnnualTurnover(double turnover) {
         if (turnover <= 0) {
@@ -23,11 +40,25 @@ public class Validator {
         }
     }
 
+    /**
+     * Валидирует тип организации.
+     *
+     * @param type проверяемый тип
+     * @throws IllegalArgumentException если тип {@code null}
+     */
+
     public static void validateType(OrganizationType type) {
         if (type == null) {
             throw new IllegalArgumentException("Тип организации не может быть null");
         }
     }
+
+    /**
+     * Валидирует координату X.
+     *
+     * @param x проверяемое значение
+     * @throws IllegalArgumentException если X > 606
+     */
 
     public static void validateX(double x){
         if (x > 606){
@@ -35,11 +66,25 @@ public class Validator {
         }
     }
 
+    /**
+     * Валидирует координату Y.
+     *
+     * @param y проверяемое значение
+     * @throws IllegalArgumentException если Y ≤ -992
+     */
+
     public static void validateY(long y){
         if (y <= -992){
             throw new IllegalArgumentException("Y должен быть больше -992");
         }
     }
+
+    /**
+     * Валидирует объект координат целиком.
+     *
+     * @param coordinates проверяемый объект
+     * @throws IllegalArgumentException если координаты {@code null} или содержат недопустимые значения
+     */
 
     public static void validateCoordinates(Coordinates coordinates) {
         if (coordinates == null) {

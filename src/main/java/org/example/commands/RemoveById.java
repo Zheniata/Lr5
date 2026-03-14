@@ -4,7 +4,9 @@ import org.example.managers.CollectionManager;
 import org.example.models.Organization;
 
 import java.util.Scanner;
-
+/**
+ * Команда удаления организации по её уникальному идентификатору (ID).
+ */
 public class RemoveById extends Command {
     CollectionManager collectionManager;
 
@@ -12,6 +14,13 @@ public class RemoveById extends Command {
         super("remove_by_id");
         this.collectionManager = collectionManager;
     }
+
+    /**
+     * Удаляет организацию с указанным ID из коллекции.
+     * Требует один аргумент — строковое представление ID.
+     *
+     * @param args массив аргументов, где args[0] — ID организации
+     */
 
     @Override
     public void execute(String[] args) {

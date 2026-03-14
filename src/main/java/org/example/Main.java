@@ -7,7 +7,10 @@ import org.example.managers.XmlFileManager;
 import org.example.util.Runner;
 
 import java.util.Scanner;
-
+/**
+ * Точка входа в приложение.
+ * Инициализирует менеджеры, регистрирует команды и запускает интерактивный режим.
+ */
 public class Main {
     private static final String fileName = System.getenv("XML_FILENAME");
     public static void main (String[] args){
@@ -26,10 +29,10 @@ public class Main {
             register("history", new History(this));
             register("print_descending", new PrintDescending(collectionManager));
             register("print_field_descending_type", new PrintFieldDescendingType(collectionManager));
-            register("remove_any_by_official_address officialAddress", new RemoveAnyByOfficialAddress(collectionManager));
+            register("remove_any_by_official_address", new RemoveAnyByOfficialAddress(collectionManager));
             register("remove_greater", new RemoveGreater(collectionManager));
             register("update", new Update(collectionManager, scanner));
-            register("execute_script", new ExecuteScript(this));
+            register("execute_script", new ExecuteScript(this, collectionManager));
             register("save", new Save(collectionManager));
             register("exit", new Exit());
         }};

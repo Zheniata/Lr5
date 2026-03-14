@@ -1,7 +1,10 @@
 package org.example.commands;
 
 import org.example.managers.CollectionManager;
-
+/**
+ * Команда сохранения текущей коллекции в XML-файл.
+ * Использует {@link org.example.managers.XmlFileManager} для сериализации данных.
+ */
 public class Save extends Command{
     CollectionManager collectionManager;
 
@@ -10,11 +13,17 @@ public class Save extends Command{
         this.collectionManager = collectionManager;
     }
 
+    /**
+     * Сохраняет коллекцию в файл.
+     * Выводит сообщение об успехе или ошибке.
+     *
+     * @param args аргументы команды (игнорируются)
+     */
+
     @Override
     public void execute(String[] args) {
         try{
             collectionManager.saveCollection();
-            System.out.println("Коллекция успешна сохранена");
         } catch (Exception e){
             System.out.println("Произошла ошибка");
         }

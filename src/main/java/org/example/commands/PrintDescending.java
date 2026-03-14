@@ -6,7 +6,9 @@ import org.example.models.Organization;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
+/**
+ * Команда вывода всех организаций в порядке убывания их ID.
+ */
 public class PrintDescending extends Command{
     CollectionManager collectionManager;
 
@@ -14,6 +16,13 @@ public class PrintDescending extends Command{
         super("print_descending");
         this.collectionManager = collectionManager;
     }
+
+    /**
+     * Выводит все организации в порядке убывания ID.
+     * Если коллекция пуста — выводит соответствующее сообщение.
+     *
+     * @param args аргументы команды (игнорируются)
+     */
 
     @Override
     public void execute(String[] args) {

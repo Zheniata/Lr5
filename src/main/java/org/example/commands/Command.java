@@ -1,7 +1,10 @@
 package org.example.commands;
 
 import java.util.Objects;
-
+/**
+ * Абстрактный базовый класс для всех команд системы.
+ * Определяет общее поведение: имя команды и метод выполнения.
+ */
 public abstract class Command {
     private String name;
 
@@ -12,7 +15,12 @@ public abstract class Command {
     public String getName() {
         return name;
     }
-
+    /**
+     * Абстрактный метод выполнения команды.
+     * Должен быть реализован в подклассах.
+     *
+     * @param args массив аргументов команды
+     */
     public abstract void execute(String[] args);
 
     @Override

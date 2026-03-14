@@ -2,7 +2,11 @@ package org.example.models;
 
 
 import java.util.Objects;
-
+/**
+ * Модель географических координат.
+ * Состоит из двух компонентов: X (тип {@code double}) и Y (тип {@code long}).
+ * Используется в составе класса {@link Organization}.
+ */
 public class Coordinates {
     private double x;
     private long y;

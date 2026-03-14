@@ -1,13 +1,21 @@
 package org.example.commands;
 
-import org.example.commands.Command;
 import org.example.managers.CommandManager;
-
+/**
+ * Команда вывода справки по всем доступным командам.
+ * Отображает краткое описание каждой команды.
+ */
 public class Help extends Command{
 
     public Help(CommandManager commandManager){
         super("help");
     }
+
+    /**
+     * Выводит список всех доступных команд с описанием.
+     *
+     * @param args аргументы команды (игнорируются)
+     */
 
     @Override
     public void execute(String[] args) {

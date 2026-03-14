@@ -4,7 +4,9 @@ import org.example.managers.CollectionManager;
 import org.example.models.Organization;
 
 import java.util.*;
-
+/**
+ * Команда удаления всех организаций, чей ID больше заданного значения.
+ */
 public class RemoveGreater extends Command{
     CollectionManager collectionManager;
 
@@ -12,6 +14,13 @@ public class RemoveGreater extends Command{
         super("remove_greater");
         this.collectionManager = collectionManager;
     }
+
+    /**
+     * Удаляет все организации с ID > указанного значения.
+     * Требует один числовой аргумент.
+     *
+     * @param args массив аргументов, где args[0] — строковое представление порогового ID
+     */
 
     @Override
     public void execute(String[] args) {

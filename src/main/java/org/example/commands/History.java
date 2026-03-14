@@ -3,7 +3,10 @@ package org.example.commands;
 import org.example.managers.CommandManager;
 
 import java.util.List;
-
+/**
+ * Команда вывода истории последних 6 выполненных команд.
+ * История хранится в {@link CommandManager} и обновляется при каждом вызове команды.
+ */
 public class History extends Command{
     CommandManager commandManager;
 
@@ -11,6 +14,13 @@ public class History extends Command{
         super("history");
         this.commandManager = commandManager;
     }
+
+    /**
+     * Выводит список последних выполненных команд (максимум 6).
+     * Если история пуста — выводит соответствующее сообщение.
+     *
+     * @param args аргументы команды (игнорируются)
+     */
 
     @Override
     public void execute(String[] args) {

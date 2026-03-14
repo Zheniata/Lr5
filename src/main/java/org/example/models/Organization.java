@@ -19,24 +19,25 @@ public class Organization implements Comparable<Organization>{
     private static long nextId = 0;
 
     public Organization() {
-        // пустой конструктор для Jackson
     }
 
-    public Organization(String name, Coordinates coordinates, float annualTurnover, OrganizationType type, Address officialAddress){
+    public Organization(String name, Coordinates coordinates, float annualTurnover, OrganizationType type, Address officialAddress, boolean validate_only){
         Validator.validateName(name);
         Validator.validateAnnualTurnover(annualTurnover);
         Validator.validateType(type);
         Validator.validateCoordinates(coordinates);
 
-        touchNextId();
+        if(!validate_only) {
+            touchNextId();
 
-        this.id = nextId;
-        this.name = name;
-        this.coordinates = coordinates;
-        this.creationDate = LocalDate.now();
-        this.annualTurnover = annualTurnover;
-        this.type = type;
-        this.officialAddress = officialAddress;
+            this.id = nextId;
+            this.name = name;
+            this.coordinates = coordinates;
+            this.creationDate = LocalDate.now();
+            this.annualTurnover = annualTurnover;
+            this.type = type;
+            this.officialAddress = officialAddress;
+        }
     }
 
     public long getId() {
@@ -151,11 +152,11 @@ public class Organization implements Comparable<Organization>{
         return "Organization{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", coordinates=" + coordinates +
-                ", creationDate=" + creationDate +
-                ", annualTurnover=" + annualTurnover +
-                ", type=" + type +
-                ", officialAddress=" + officialAddress +
+                ", coordinates = " + "{X = " + coordinates.getX() + "; Y = " + coordinates.getY() + "}" +
+                ", creationDate = " + creationDate +
+                ", annualTurnover = " + annualTurnover +
+                ", type = " + type +
+                ", officialAddress = " + officialAddress +
                 '}';
     }
 }

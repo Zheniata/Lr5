@@ -5,8 +5,11 @@ import org.example.models.Address;
 import org.example.models.Organization;
 
 import java.util.Collection;
-import java.util.PriorityQueue;
-
+import java.util.Iterator;
+/**
+ * Команда удаления одной организации, у которой официальный адрес содержит указанную улицу.
+ * Удаляется только первый найденный элемент.
+ */
 public class RemoveAnyByOfficialAddress extends Command{
     CollectionManager collectionManager;
 
@@ -14,6 +17,13 @@ public class RemoveAnyByOfficialAddress extends Command{
         super("remove_any_by_official_address");
         this.collectionManager = collectionManager;
     }
+
+    /**
+     * Удаляет первую организацию, у которой улица в официальном адресе совпадает с заданной.
+     * Требует один аргумент — название улицы.
+     *
+     * @param args массив аргументов, где args[0] — название улицы
+     */
 
     @Override
     public void execute(String[] args) {
@@ -25,11 +35,13 @@ public class RemoveAnyByOfficialAddress extends Command{
         Collection<Organization> collection = collectionManager.getCollection();
         boolean found = false;
 
-        for(Organization organization: collection){
-            Address adress = organization.getOfficialAddress();
-            if (adress != null && adress.getStreet() != null && adress.getStreet().equals(street)){
-                collectionManager.removeFromCollection(organization);
-                System.out.println("Элемент с адресом: " + street + " удален");
+        Iterator<Organization> iterator = collection.iterator();
+        while (iterator.hasNext()) {
+            Organization org = iterator.next();
+            Address addr = org.getOfficialAddress();
+            if (addr != null && street.equals(addr.getStreet())) {
+                iterator.remove();
+                System.out.println("Элемент с адресом: " + street + " удалён");
                 found = true;
                 break;
             }

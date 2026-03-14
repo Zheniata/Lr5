@@ -4,28 +4,43 @@ import org.example.models.Organization;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
+
+/**
+ * Менеджер коллекции организаций.
+ * Отвечает за хранение, управление, загрузку и сохранение данных.
+ * Использует {@link PriorityQueue} для автоматической сортировки по ID (благодаря {@link Comparable} в {@link Organization}).
+ * Поддерживает механизм уникальных ID через множество {@code usedIds}.
+ */
 
 public class CollectionManager {
     private PriorityQueue<Organization> collection = new PriorityQueue<Organization>();
     private LocalDateTime lastInitTime;
     private LocalDateTime lastSaveTime;
     private final XmlFileManager fileManager;
+    private final Set<Long> usedIds = new HashSet<>();
 
     public CollectionManager(XmlFileManager fileManager){
         this.fileManager = fileManager;
         loadCollection();
     }
 
+    /**
+     * Загружает коллекцию организаций из XML-файла.
+     * Сохраняет оригинальные ID из файла и обновляет множество {@code usedIds}.
+     * Если файл отсутствует или повреждён, коллекция остаётся пустой.
+     */
+
     private void loadCollection(){
         try {
             List<Organization> loaded = fileManager.readCollection();
-            for(Organization org : loaded) {
-                Organization.touchNextId();
-                org.setId(Organization.getNextId());
+            usedIds.clear();
+            long maxId = 0;
+            for (Organization org : loaded) {
+                long id = org.getId();
+                usedIds.add(id);
             }
+            Organization.setNextId(maxId + 1);
             collection.clear();
             collection.addAll(loaded);
             lastInitTime = LocalDateTime.now();
@@ -34,18 +49,48 @@ public class CollectionManager {
         catch (Exception e) {
             System.err.println("Ошибка при загрузке (или файл отсутсвует)");
             collection.clear();
+            usedIds.clear();
+            Organization.setNextId(1);
         }
     }
+
+    /**
+     * Генерирует следующий доступный (минимальный положительный незанятый) идентификатор.
+     * Добавляет его в множество {@code usedIds} и возвращает.
+     *
+     * @return новый уникальный ID
+     */
+
+    public long getNextAvailableId() {
+        long id = 1;
+        while (usedIds.contains(id)) {
+            id++;
+        }
+        usedIds.add(id);
+        return id;
+    }
+
+    /**
+     * Сохраняет текущую коллекцию в XML-файл.
+     * Обновляет время последнего сохранения.
+     */
 
     public void saveCollection(){
         try {
             fileManager.writeCollection(new ArrayList<>(collection));
             lastSaveTime = LocalDateTime.now();
-            System.out.println("Коллекция успешна завершена");
+            System.out.println("Коллекция успешна сохранена");
         } catch (IOException e) {
             System.out.println("Ошибка при сохранении");
         }
     }
+
+    /**
+     * Возвращает организацию по её уникальному идентификатору.
+     *
+     * @param id идентификатор организации
+     * @return найденная организация или {@code null}, если не найдена
+     */
 
     public Organization getById(long id){
         for (Organization element: collection){
@@ -56,14 +101,32 @@ public class CollectionManager {
         return null;
     }
 
+    /**
+     * Добавляет новую организацию в коллекцию.
+     *
+     * @param element организация для добавления
+     */
+
     public void addToCollection(Organization element){
-        //Organization.touchNextId();
         collection.add(element);
     }
+
+    /**
+     * Удаляет указанную организацию из коллекции.
+     *
+     * @param element организация для удаления
+     */
 
     public void removeFromCollection(Organization element){
         collection.remove(element);
     }
+
+    /**
+     * Проверяет, существует ли организация с заданным ID.
+     *
+     * @param id идентификатор для проверки
+     * @return {@code true}, если организация существует; иначе {@code false}
+     */
 
     public boolean checkExist(long id){
         for (Organization element: collection){
@@ -74,29 +137,59 @@ public class CollectionManager {
         return false;
     }
 
+    /**
+     * Полностью очищает коллекцию.
+     */
+
      public void clearCollection(){
         collection.clear();
      }
+
+    /**
+     * Возвращает размер коллекции.
+     *
+     * @return количество организаций в коллекции
+     */
 
     public int size() {
         return collection.size();
     }
 
+    /**
+     * Проверяет, пуста ли коллекция.
+     *
+     * @return {@code true}, если коллекция пуста; иначе {@code false}
+     */
+
     public boolean isEmpty() {
         return collection.isEmpty();
     }
 
-    public void clear(){
-        collection.clear();
-    }
+    /**
+     * Возвращает саму коллекцию организаций.
+     *
+     * @return коллекцию
+     */
 
     public PriorityQueue<Organization> getCollection() {
         return collection;
     }
 
+    /**
+     * Возвращает время последней загрузки данных.
+     *
+     * @return дата и время инициализации или {@code null}, если ещё не загружалась
+     */
+
     public LocalDateTime getTime(){
         return lastInitTime;
     }
+
+    /**
+     * Возвращает время последнего сохранения данных.
+     *
+     * @return дата и время последнего сохранения или {@code null}, если ещё не сохранялась
+     */
     public LocalDateTime getLastSaveTime() {
         return lastSaveTime;
     }

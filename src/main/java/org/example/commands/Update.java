@@ -10,6 +10,12 @@ import org.example.models.OrganizationType;
 
 import java.util.Scanner;
 
+/**
+ * Команда обновления существующей организации по её ID.
+ * Запрашивает у пользователя новые данные (имя, координаты, годовой оборот, тип, адрес)
+ * и заменяет старую организацию на новую с тем же ID и датой создания.
+ */
+
 public class Update extends Command{
     CollectionManager collectionManager;
     private Scanner scanner;
@@ -19,6 +25,14 @@ public class Update extends Command{
         this.collectionManager = collectionManager;
         this.scanner = scanner;
     }
+
+    /**
+     * Выполняет обновление организации.
+     * Требует один аргумент — ID существующей организации.
+     * После валидации ID запрашивает новые данные и заменяет объект в коллекции.
+     *
+     * @param args массив аргументов, где args[0] — строковое представление ID
+     */
 
     @Override
     public void execute(String[] args) {
@@ -141,9 +155,7 @@ public class Update extends Command{
             }
 
             try {
-                Organization organization = new Organization(name, coordinates, annualTurnover, type, address);
-                collectionManager.addToCollection(organization);
-                System.out.println("Организация добавлена");
+                new Organization(name, coordinates, annualTurnover, type, address,true);
             }
             catch (Exception e){
                 System.out.println(e.getMessage());
