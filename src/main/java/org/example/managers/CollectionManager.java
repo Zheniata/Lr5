@@ -35,12 +35,10 @@ public class CollectionManager {
         try {
             List<Organization> loaded = fileManager.readCollection();
             usedIds.clear();
-            long maxId = 0;
             for (Organization org : loaded) {
                 long id = org.getId();
                 usedIds.add(id);
             }
-            Organization.setNextId(maxId + 1);
             collection.clear();
             collection.addAll(loaded);
             lastInitTime = LocalDateTime.now();
@@ -50,7 +48,6 @@ public class CollectionManager {
             System.err.println("Ошибка при загрузке (или файл отсутсвует)");
             collection.clear();
             usedIds.clear();
-            Organization.setNextId(1);
         }
     }
 

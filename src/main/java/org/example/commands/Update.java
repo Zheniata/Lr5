@@ -154,12 +154,6 @@ public class Update extends Command{
                 address = null;
             }
 
-            try {
-                new Organization(name, coordinates, annualTurnover, type, address,true);
-            }
-            catch (Exception e){
-                System.out.println(e.getMessage());
-            }
             Organization updated = new Organization(org.getId(), org.getCreationDate(),
                     name, coordinates, annualTurnover, type, address);
             collectionManager.removeFromCollection(org);

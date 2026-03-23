@@ -16,28 +16,24 @@ public class Organization implements Comparable<Organization>{
     private OrganizationType type;
     private Address officialAddress;
 
-    private static long nextId = 0;
 
     public Organization() {
     }
 
-    public Organization(String name, Coordinates coordinates, float annualTurnover, OrganizationType type, Address officialAddress, boolean validate_only){
+    public Organization(long id, String name, Coordinates coordinates, float annualTurnover, OrganizationType type, Address officialAddress){
         Validator.validateName(name);
         Validator.validateAnnualTurnover(annualTurnover);
         Validator.validateType(type);
         Validator.validateCoordinates(coordinates);
 
-        if(!validate_only) {
-            touchNextId();
 
-            this.id = nextId;
+            this.id = id;
             this.name = name;
             this.coordinates = coordinates;
             this.creationDate = LocalDate.now();
             this.annualTurnover = annualTurnover;
             this.type = type;
             this.officialAddress = officialAddress;
-        }
     }
 
     public long getId() {
@@ -56,9 +52,6 @@ public class Organization implements Comparable<Organization>{
         return creationDate;
     }
 
-    public static void touchNextId() {
-        nextId++;
-    }
 
     public String getName() {
         return name;
@@ -72,9 +65,6 @@ public class Organization implements Comparable<Organization>{
         return annualTurnover;
     }
 
-    public static long getNextId() {
-        return nextId;
-    }
 
     public void setId(long id) {
         this.id = id;
@@ -104,9 +94,6 @@ public class Organization implements Comparable<Organization>{
         this.officialAddress = officialAddress;
     }
 
-    public static void setNextId(long nextId) {
-        Organization.nextId = nextId;
-    }
 
     @Override
     public int compareTo(Organization o) {
@@ -128,9 +115,6 @@ public class Organization implements Comparable<Organization>{
         this.type = type;
         this.officialAddress = officialAddress;
 
-        if (id >= nextId) {
-            nextId = id + 1;
-        }
     }
 
     @Override
