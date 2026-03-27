@@ -4,6 +4,7 @@ import org.example.commands.*;
 import org.example.managers.CollectionManager;
 import org.example.managers.CommandManager;
 import org.example.managers.XmlFileManager;
+import org.example.models.Organization;
 import org.example.util.Runner;
 
 import java.util.Scanner;
@@ -16,7 +17,7 @@ public class Main {
     public static void main (String[] args){
         Scanner scanner = new Scanner(System.in);
         XmlFileManager xmlFileManager = new XmlFileManager(fileName);
-        CollectionManager collectionManager = new CollectionManager(xmlFileManager);
+        CollectionManager<Organization> collectionManager = new CollectionManager<>(xmlFileManager);
 
         CommandManager commandManager = new CommandManager(){{
             register("help", new Help(this));

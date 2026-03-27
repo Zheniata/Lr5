@@ -3,10 +3,7 @@ package org.example.commands;
 import org.example.exceptions.MustBeNotEmptyException;
 import org.example.exceptions.ValidationException;
 import org.example.managers.CollectionManager;
-import org.example.models.Address;
-import org.example.models.Coordinates;
-import org.example.models.Organization;
-import org.example.models.OrganizationType;
+import org.example.models.*;
 
 import java.util.Scanner;
 
@@ -17,7 +14,7 @@ import java.util.Scanner;
  */
 
 public class Update extends Command{
-    CollectionManager collectionManager;
+    CollectionManager<Organization> collectionManager;
     private Scanner scanner;
 
     public Update(CollectionManager collectionManager, Scanner scanner){

@@ -41,7 +41,7 @@ public class XmlFileManager {
      */
 
     @JacksonXmlRootElement(localName = "organizations")
-    public static class OrganizationsWrapper {
+    public class OrganizationsWrapper {
         /**
          * Список организаций, сериализуемых как повторяющиеся элементы {@code <organization>}.
          */

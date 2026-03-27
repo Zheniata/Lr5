@@ -1,14 +1,15 @@
 package org.example.commands;
 
 import org.example.managers.CollectionManager;
+import org.example.models.Identifiable;
 import org.example.models.Organization;
 
 import java.util.Scanner;
 /**
  * Команда удаления организации по её уникальному идентификатору (ID).
  */
-public class RemoveById extends Command {
-    CollectionManager collectionManager;
+public class RemoveById <T extends Comparable<T> & Identifiable> extends Command {
+    CollectionManager<T> collectionManager;
 
     public RemoveById(CollectionManager collectionManager) {
         super("remove_by_id");
@@ -32,12 +33,12 @@ public class RemoveById extends Command {
             System.out.println("Неверный фомат id");
             return;
         }
-        Organization organization = collectionManager.getById(id);
-        if (organization == null) {
+        T element = collectionManager.getById(id);
+        if (element == null) {
             System.out.println("Организация с id=" + id + " не найдена");
             return;
         }
-        collectionManager.removeFromCollection(organization);
+        collectionManager.removeFromCollection(element);
         System.out.println("Организация с id=" + id + " удалена");
     }
 }

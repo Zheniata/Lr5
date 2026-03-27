@@ -1,5 +1,6 @@
 package org.example.managers;
 
+import org.example.models.Identifiable;
 import org.example.models.Organization;
 
 import java.io.IOException;
@@ -13,13 +14,14 @@ import java.util.*;
  * Поддерживает механизм уникальных ID через множество {@code usedIds}.
  */
 
-public class CollectionManager {
-    private PriorityQueue<Organization> collection = new PriorityQueue<Organization>();
+public class CollectionManager<T extends Comparable<T> & Identifiable> {
+    private PriorityQueue<T> collection = new PriorityQueue<>();
     private LocalDateTime lastInitTime;
     private LocalDateTime lastSaveTime;
     private final XmlFileManager fileManager;
     private final Set<Long> usedIds = new HashSet<>();
 
+    @SuppressWarnings("unchecked")
     public CollectionManager(XmlFileManager fileManager){
         this.fileManager = fileManager;
         loadCollection();
@@ -33,16 +35,18 @@ public class CollectionManager {
 
     private void loadCollection(){
         try {
-            List<Organization> loaded = fileManager.readCollection();
+            List<Organization> rawLoaded = fileManager.readCollection();
+            List<T> typedLoaded = (List<T>) (List<?>) rawLoaded;
+
             usedIds.clear();
-            for (Organization org : loaded) {
-                long id = org.getId();
-                usedIds.add(id);
+            for (T item : typedLoaded) {
+                usedIds.add(item.getId());
             }
+
             collection.clear();
-            collection.addAll(loaded);
+            collection.addAll(typedLoaded);
             lastInitTime = LocalDateTime.now();
-            System.out.println("Загружены данные из файла " + System.getenv("XML_FILENAME") + ". В коллекции " + loaded.size() + " объект(а/ов).");
+            System.out.println("Загружены данные из файла " + System.getenv("XML_FILENAME") + ". В коллекции " + typedLoaded.size() + " объект(а/ов).");
         }
         catch (Exception e) {
             System.err.println("Ошибка при загрузке (или файл отсутсвует)");
@@ -74,7 +78,8 @@ public class CollectionManager {
 
     public void saveCollection(){
         try {
-            fileManager.writeCollection(new ArrayList<>(collection));
+            List<Organization> orgList = (List<Organization>) (List<?>) new ArrayList<>(collection);
+            fileManager.writeCollection(orgList);
             lastSaveTime = LocalDateTime.now();
             System.out.println("Коллекция успешна сохранена");
         } catch (IOException e) {
@@ -89,8 +94,8 @@ public class CollectionManager {
      * @return найденная организация или {@code null}, если не найдена
      */
 
-    public Organization getById(long id){
-        for (Organization element: collection){
+    public T getById(long id){
+        for (T element: collection){
             if(element.getId() == id){
                 return element;
             }
@@ -104,7 +109,7 @@ public class CollectionManager {
      * @param element организация для добавления
      */
 
-    public void addToCollection(Organization element){
+    public void addToCollection(T element){
         collection.add(element);
     }
 
@@ -114,7 +119,7 @@ public class CollectionManager {
      * @param element организация для удаления
      */
 
-    public void removeFromCollection(Organization element){
+    public void removeFromCollection(T element){
         collection.remove(element);
     }
 
@@ -126,7 +131,7 @@ public class CollectionManager {
      */
 
     public boolean checkExist(long id){
-        for (Organization element: collection){
+        for (T element: collection){
             if (element.getId() == id){
                 return true;
             }
@@ -168,7 +173,7 @@ public class CollectionManager {
      * @return коллекцию
      */
 
-    public PriorityQueue<Organization> getCollection() {
+    public PriorityQueue<T> getCollection() {
         return collection;
     }
 

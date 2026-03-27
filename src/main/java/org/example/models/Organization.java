@@ -6,7 +6,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.example.util.Validator;
 
-public class Organization implements Comparable<Organization>{
+public class Organization implements Comparable<Organization>, Identifiable{
     private long id;
     private String name;
     private Coordinates coordinates;
