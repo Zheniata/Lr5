@@ -2,10 +2,7 @@ package org.example.commands;
 
 import org.example.managers.CollectionManager;
 import org.example.managers.CommandManager;
-import org.example.models.Address;
-import org.example.models.Coordinates;
-import org.example.models.Organization;
-import org.example.models.OrganizationType;
+import org.example.models.*;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -20,14 +17,16 @@ import java.time.LocalDate;
  * Специальный формат добавления: {@code add {name='...', x=..., y=..., ...}}</li>
  * Предотвращает рекурсивное выполнение одного и того же файла.
  */
-public class ExecuteScript extends Command{
+public class ExecuteScript<T extends Comparable<T> & Identifiable> extends Command{
     CommandManager commandManager;
-    CollectionManager collectionManager;
+    CollectionManager<T> collectionManager;
+    private ObjectCreator<T> creator;
 
-    public ExecuteScript(CommandManager commandManager, CollectionManager collectionManager){
+    public ExecuteScript(CommandManager commandManager, CollectionManager<T> collectionManager, ObjectCreator<T> creator){
         super("execute_script");
         this.commandManager = commandManager;
         this.collectionManager = collectionManager;
+        this.creator = creator;
     }
 
     /**
@@ -185,16 +184,8 @@ public class ExecuteScript extends Command{
         try {
             long newId = collectionManager.getNextAvailableId();
             LocalDate creationDate = LocalDate.now();
-            Organization org = new Organization(
-                    newId,
-                    creationDate,
-                    name,
-                    coordinates,
-                    annualTurnover,
-                    type,
-                    address
-            );
-            collectionManager.addToCollection(org);
+            T obj = creator.create(newId, creationDate, name, coordinates, annualTurnover, type, address);
+            collectionManager.addToCollection(obj);
             System.out.println("Добавлена организация из скрипта: " + name);
         } catch (Exception e) {
             System.err.println("Строка " + lineNum + ": ошибка создания: " + e.getMessage());

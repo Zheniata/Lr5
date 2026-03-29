@@ -5,6 +5,7 @@ import org.example.exceptions.ValidationException;
 import org.example.managers.CollectionManager;
 import org.example.models.*;
 
+import java.time.LocalDate;
 import java.util.Scanner;
 
 /**
@@ -13,14 +14,16 @@ import java.util.Scanner;
  * и заменяет старую организацию на новую с тем же ID и датой создания.
  */
 
-public class Update extends Command{
-    CollectionManager<Organization> collectionManager;
+public class Update<T extends Comparable<T> & Identifiable & HasCreationDate & HasOfficialAddress> extends Command{
+    CollectionManager<T> collectionManager;
     private Scanner scanner;
+    private ObjectCreator<T> creator;
 
-    public Update(CollectionManager collectionManager, Scanner scanner){
+    public Update(CollectionManager<T> collectionManager, Scanner scanner, ObjectCreator<T> creator){
         super("update");
         this.collectionManager = collectionManager;
         this.scanner = scanner;
+        this.creator = creator;
     }
 
     /**
@@ -52,7 +55,7 @@ public class Update extends Command{
             System.out.println("Организации с id = " + id + " не сущетсвует");
         }
         else {
-            Organization org = collectionManager.getById(id);
+            T oldObj = collectionManager.getById(id);
             String name;
             while (true){
                 try {
@@ -151,12 +154,14 @@ public class Update extends Command{
                 address = null;
             }
 
-            Organization updated = new Organization(org.getId(), org.getCreationDate(),
-                    name, coordinates, annualTurnover, type, address);
-            collectionManager.removeFromCollection(org);
+            LocalDate creationDate = oldObj.getCreationDate();
+
+            T updated = creator.create(id, creationDate, name, coordinates, annualTurnover, type, address);
+
+            collectionManager.removeFromCollection(oldObj);
             collectionManager.addToCollection(updated);
 
-            System.out.println("Организация с id = " + id + " обновлена");
+            System.out.println("Элемент с id = " + id + " обновлён");
         }
     }
 }

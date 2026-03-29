@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class RemoveById <T extends Comparable<T> & Identifiable> extends Command {
     CollectionManager<T> collectionManager;
 
-    public RemoveById(CollectionManager collectionManager) {
+    public RemoveById(CollectionManager<T> collectionManager) {
         super("remove_by_id");
         this.collectionManager = collectionManager;
     }

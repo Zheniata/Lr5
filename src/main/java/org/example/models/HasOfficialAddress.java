@@ -1,6 +1,5 @@
 package org.example.models;
 
-public interface Identifiable {
-    long getId();
+public interface HasOfficialAddress {
     Address getOfficialAddress();
 }

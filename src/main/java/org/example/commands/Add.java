@@ -6,23 +6,23 @@ import org.example.managers.CommandManager;
 import java.time.LocalDate;
 import java.util.Scanner;
 import org.example.exceptions.*;
-import org.example.models.Address;
-import org.example.models.Coordinates;
-import org.example.models.Organization;
-import org.example.models.OrganizationType;
+import org.example.models.*;
+
 /**
  * Команда добавления новой организации в коллекцию.
  * Запрашивает у пользователя все необходимые поля:
  * имя, координаты, годовой оборот, тип и адрес.
  */
-public class Add extends Command {
-    private CollectionManager collectionManager;
+public class Add<T extends Comparable<T> & Identifiable> extends Command {
+    private CollectionManager<T> collectionManager;
     private Scanner scanner;
+    private ObjectCreator<T> creator;
 
-    public Add(CollectionManager collectionManager, Scanner scanner){
+    public Add(CollectionManager<T> collectionManager, Scanner scanner, ObjectCreator<T> creator){
         super("add");
         this.collectionManager = collectionManager;
         this.scanner = scanner;
+        this.creator = creator;
     }
 
     /**
@@ -139,16 +139,8 @@ public class Add extends Command {
         try {
             long newId = collectionManager.getNextAvailableId();
             LocalDate creationDate = LocalDate.now();
-            Organization organization = new Organization(
-                    newId,
-                    creationDate,
-                    name,
-                    coordinates,
-                    annualTurnover,
-                    type,
-                    address
-            );
-            collectionManager.addToCollection(organization);
+            T obj = creator.create (newId, creationDate, name, coordinates, annualTurnover, type, address);
+            collectionManager.addToCollection(obj);
             System.out.println("Организация добавлена");
         }
         catch (Exception e){

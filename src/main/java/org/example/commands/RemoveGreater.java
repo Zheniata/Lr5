@@ -1,16 +1,17 @@
 package org.example.commands;
 
 import org.example.managers.CollectionManager;
+import org.example.models.Identifiable;
 import org.example.models.Organization;
 
 import java.util.*;
 /**
  * Команда удаления всех организаций, чей ID больше заданного значения.
  */
-public class RemoveGreater extends Command{
-    CollectionManager collectionManager;
+public class RemoveGreater<T extends Comparable<T> & Identifiable> extends Command{
+    CollectionManager<T> collectionManager;
 
-    public RemoveGreater(CollectionManager collectionManager){
+    public RemoveGreater(CollectionManager<T> collectionManager){
         super("remove_greater");
         this.collectionManager = collectionManager;
     }
@@ -41,17 +42,17 @@ public class RemoveGreater extends Command{
             System.out.println("id должен быть целым числом");
             return;
         }
-        Collection<Organization> collection = collectionManager.getCollection();
+        Collection<T> collection = collectionManager.getCollection();
         if (collection.isEmpty()){
             System.out.println("Коллекция пуста");
             return;
         }
 
-        Iterator<Organization> iterator = collection.iterator();
+        Iterator<T> iterator = collection.iterator();
         int removedCount = 0;
         while (iterator.hasNext()){
-            Organization organization = iterator.next();
-            if(organization.getId() > idMax){
+            T item = iterator.next();
+            if(item.getId() > idMax){
                 iterator.remove();
                 removedCount++;
             }

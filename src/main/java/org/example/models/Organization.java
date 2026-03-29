@@ -6,7 +6,8 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.example.util.Validator;
 
-public class Organization implements Comparable<Organization>, Identifiable{
+public class Organization implements Comparable<Organization>, Identifiable, HasType, HasCreationDate,
+        HasOfficialAddress{
     private long id;
     private String name;
     private Coordinates coordinates;
@@ -36,12 +37,10 @@ public class Organization implements Comparable<Organization>, Identifiable{
             this.officialAddress = officialAddress;
     }
 
+
+
     public long getId() {
         return id;
-    }
-
-    public OrganizationType getType(){
-        return type;
     }
 
     public Address getOfficialAddress(){
@@ -142,5 +141,10 @@ public class Organization implements Comparable<Organization>, Identifiable{
                 ", type = " + type +
                 ", officialAddress = " + officialAddress +
                 '}';
+    }
+
+    @Override
+    public String getTypeName() {
+        return type != null ? type.name() : "UNKNOWN";
     }
 }

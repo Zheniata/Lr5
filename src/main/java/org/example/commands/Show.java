@@ -1,6 +1,7 @@
 package org.example.commands;
 
 import org.example.managers.CollectionManager;
+import org.example.models.Identifiable;
 import org.example.models.Organization;
 
 import java.util.PriorityQueue;
@@ -9,10 +10,10 @@ import java.util.PriorityQueue;
  * Команда вывода всех организаций из коллекции.
  */
 
-public class Show extends Command{
-    CollectionManager collectionManager;
+public class Show<T extends Comparable<T> & Identifiable> extends Command{
+    CollectionManager<T> collectionManager;
 
-    public Show(CollectionManager collectionManager){
+    public Show(CollectionManager<T> collectionManager){
         super("show");
         this.collectionManager = collectionManager;
     }
@@ -26,12 +27,12 @@ public class Show extends Command{
 
     @Override
     public void execute(String[] args) {
-        PriorityQueue<Organization> collection = collectionManager.getCollection();
+        PriorityQueue<T> collection = collectionManager.getCollection();
         if (collection.isEmpty()){
             System.out.println("Коллекцияя пуста");
         }
-        for (Organization organization: collection){
-            System.out.println(organization);
+        for (T item: collection){
+            System.out.println(item);
         }
     }
 }
